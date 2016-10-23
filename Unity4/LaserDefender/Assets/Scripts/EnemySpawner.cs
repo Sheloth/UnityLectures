@@ -7,6 +7,7 @@ public class EnemySpawner : MonoBehaviour {
 	public float speed=3f;
 	public float width = 10f;
 	public float height = 5f;
+	public float spawnDelay = 0.5f;
 	
 	private bool isMovingRight = false;
 	private float minX;
@@ -19,17 +20,53 @@ public class EnemySpawner : MonoBehaviour {
 		Vector3 rightBoundary = Camera.main.ViewportToWorldPoint(new Vector3(1,0,distanceToCamera));
 		minX = leftBoundary.x;
 		maxX = rightBoundary.x;
-	
-		foreach(Transform child in transform)
-		{
-			GameObject enemyInstance = Instantiate(enemy, child.position, Quaternion.identity) as GameObject;
-			enemyInstance.transform.parent = child;
-		}
+		SpawnUntilFull();
 	}
 	
 	// Update is called once per frame
 	void Update () {
 		MoveFormation();
+		if(AllEnemiesDestroyed()) {
+			SpawnUntilFull();
+		}
+	}
+	
+	void SpawnEnemies () {
+		foreach(Transform child in transform) {
+			GameObject enemyInstance = Instantiate(enemy, child.position, Quaternion.identity) as GameObject;
+			enemyInstance.transform.parent = child;
+		}
+	}
+	
+	void SpawnUntilFull () {
+		Transform nextPosition = NextFreePosition();
+		if(nextPosition) {
+			GameObject enemyInstance = Instantiate(enemy, nextPosition.position, Quaternion.identity) as GameObject;
+			enemyInstance.transform.parent = nextPosition;
+		}
+		if(NextFreePosition()) {
+			Invoke("SpawnUntilFull", spawnDelay);
+		}
+	}
+	
+	Transform NextFreePosition () {
+		foreach(Transform childObject in transform) {
+			if(childObject.childCount == 0) {
+				return childObject;
+			}
+		}
+		
+		return null;
+	}
+	
+	bool AllEnemiesDestroyed () {
+		foreach(Transform childObject in transform) {
+			if(childObject.childCount > 0) {
+				return false;
+			}
+		}
+		
+		return true;
 	}
 	
 	void MoveFormation () {
