@@ -4,6 +4,9 @@ using System.Collections;
 public class PlayerController : MonoBehaviour {
 
 	public float speed = 3.0f;
+	public GameObject projectile;
+	public float projectileSpeed = 7.0f;
+	public float fireRate = 0.2f;
 	
 	float minX;
 	float maxX;
@@ -20,6 +23,14 @@ public class PlayerController : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+		if(Input.GetKeyDown(KeyCode.Space)) {
+			InvokeRepeating("Fire", 0.00001f, fireRate);
+		}
+
+		if(Input.GetKeyUp(KeyCode.Space)) {
+			CancelInvoke("Fire");
+		}
+		
 		if(Input.GetKey(KeyCode.LeftArrow)) {
 			transform.position += Vector3.left * speed * Time.deltaTime;
 		}
@@ -30,4 +41,10 @@ public class PlayerController : MonoBehaviour {
 		float newX = Mathf.Clamp(transform.position.x, minX, maxX);
 		transform.position = new Vector3(newX, transform.position.y, transform.position.z);
 	}
+
+	void Fire () {
+		GameObject projectileInstance = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
+		projectileInstance.rigidbody2D.velocity += new Vector2(0f, projectileSpeed);
+	}
+		
 }
