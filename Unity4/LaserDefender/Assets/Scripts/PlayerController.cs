@@ -50,8 +50,6 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter2D (Collider2D collider) {
-		Debug.Log("Player collide with a missile");
-		
 		Projectile missile = collider.gameObject.GetComponent<Projectile>();
 		
 		if(missile) {
