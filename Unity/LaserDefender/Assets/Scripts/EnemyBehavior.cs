@@ -30,7 +30,7 @@ public class EnemyBehavior : MonoBehaviour {
 	
 	void Fire () {
 		GameObject missile = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
-		missile.rigidbody2D.velocity += new Vector2(0, -projectileSpeed);
+		missile.GetComponent<Rigidbody2D>().velocity += new Vector2(0, -projectileSpeed);
 		AudioSource.PlayClipAtPoint(fireSound, transform.position);
 	}
 
@@ -57,6 +57,6 @@ public class EnemyBehavior : MonoBehaviour {
 	
 	void SpawBonus() {
 		GameObject bonus = Instantiate(healthBonus, transform.position, Quaternion.identity) as GameObject;
-		bonus.rigidbody2D.velocity += new Vector2(0, -bousSpeed);
+		bonus.GetComponent<Rigidbody2D>().velocity += new Vector2(0, -bousSpeed);
 	}
 }

@@ -57,7 +57,7 @@ public class PlayerController : MonoBehaviour {
 
 	void Fire () {
 		GameObject projectileInstance = Instantiate(projectile, transform.position, Quaternion.identity) as GameObject;
-		projectileInstance.rigidbody2D.velocity += new Vector2(0f, projectileSpeed);
+		projectileInstance.GetComponent<Rigidbody2D>().velocity += new Vector2(0f, projectileSpeed);
 		AudioSource.PlayClipAtPoint(fireSound, transform.position);
 	}
 	
