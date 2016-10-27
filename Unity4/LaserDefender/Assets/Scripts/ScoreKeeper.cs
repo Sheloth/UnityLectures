@@ -4,13 +4,14 @@ using UnityEngine.UI;
 
 public class ScoreKeeper : MonoBehaviour {
 	
-	public int totalScores = 0;
+	public static int totalScores = 0;
 	
 	private Text text;
 	
 	void Start () {
 		text = GetComponent<Text>();
 		text.text = "0";
+		Reset();
 	}
 	
 	// Use this for initialization
@@ -19,7 +20,7 @@ public class ScoreKeeper : MonoBehaviour {
 		text.text = totalScores.ToString();
 	} 
 	
-	public void Reset () {
+	public static void Reset () {
 		totalScores = 0;
 	}
 }

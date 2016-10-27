@@ -60,9 +60,14 @@ public class PlayerController : MonoBehaviour {
 			missile.Hit();
 			if(health <= 0) {
 				AudioSource.PlayClipAtPoint(deathSound, transform.position);
-				Destroy(gameObject);
+				Die();	
 			}
 		}
 	}
 	
+	void Die () {
+		LevelManager manager = GameObject.Find ("LevelManager").GetComponent<LevelManager>();
+		Destroy(gameObject);
+		manager.LoadLevel("Lose");
+	}	
 }
