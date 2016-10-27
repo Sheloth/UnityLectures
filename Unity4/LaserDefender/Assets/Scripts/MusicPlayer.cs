@@ -11,8 +11,8 @@ public class MusicPlayer : MonoBehaviour {
 	private AudioSource source;
 
 	// Use this for initialization
-	void Start () {
-		if(instance != null) {
+	void Awake () {
+		if(instance != null && instance != this) {
 			Destroy(gameObject);
 		}
 		else {
@@ -26,8 +26,11 @@ public class MusicPlayer : MonoBehaviour {
 
 	}
 	
-	public void OnLevelWasLoaded (int level) {
-		source.Stop();
+	void OnLevelWasLoaded (int level) {
+		if(this != instance) {
+			return;
+		}
+		
 		if(level == 0) {
 			source.clip = startMusic;
 		}

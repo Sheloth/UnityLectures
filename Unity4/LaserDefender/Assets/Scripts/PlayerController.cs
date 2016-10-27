@@ -7,10 +7,16 @@ public class PlayerController : MonoBehaviour {
 	public GameObject projectile;
 	public float projectileSpeed = 7.0f;
 	public float fireRate = 0.2f;
-	public float health = 150f;
+	
+	float maxHealth = 300f;
+	
+	float health;
 	
 	public AudioClip fireSound;
 	public AudioClip deathSound;
+	public AudioClip bonusSound;
+	
+	HealthBarController healthBar = null;
 	
 	float minX;
 	float maxX;
@@ -23,6 +29,9 @@ public class PlayerController : MonoBehaviour {
 		Vector3 rightmost = Camera.main.ViewportToWorldPoint(new Vector3(1, 0, distance));
 		minX = leftmost.x + padding;
 		maxX = rightmost.x - padding;
+		health = maxHealth;
+		
+		healthBar = GameObject.Find("HealthBar").GetComponent<HealthBarController>();
 	}
 	
 	// Update is called once per frame
@@ -53,16 +62,35 @@ public class PlayerController : MonoBehaviour {
 	}
 	
 	void OnTriggerEnter2D (Collider2D collider) {
-		Projectile missile = collider.gameObject.GetComponent<Projectile>();
+		string tag = collider.tag;
 		
-		if(missile) {
-			health -= missile.GetDamage();
-			missile.Hit();
-			if(health <= 0) {
-				AudioSource.PlayClipAtPoint(deathSound, transform.position);
-				Die();	
+		if(tag == "Missile") {
+			Projectile missile = collider.gameObject.GetComponent<Projectile>();
+			if(missile) {
+				health -= missile.GetDamage();
+				missile.Hit();
+				healthBar.RemoveHealth();
+				if(health <= 0) {
+					AudioSource.PlayClipAtPoint(deathSound, transform.position);
+					Die();	
+				}
 			}
 		}
+		else if(tag == "Bonus") {
+			HealthBonus bonus = collider.gameObject.GetComponent<HealthBonus>();
+			if(bonus) {
+				if(health < maxHealth) {
+					AudioSource.PlayClipAtPoint(bonusSound, transform.position);
+				}
+				health += 100;
+				if(health > maxHealth)
+					health = maxHealth;
+		
+				healthBar.AddHealth();
+				bonus.Gained();
+			}
+		} 
+		
 	}
 	
 	void Die () {

@@ -4,10 +4,13 @@ using System.Collections;
 public class EnemyBehavior : MonoBehaviour {
 
 	public GameObject projectile;
+	public GameObject healthBonus;
 	public float health = 150f;
 	public float projectileSpeed = 10f;
 	public float shotsPerSecond = 0.5f;
 	public int scoreValue = 150;
+	public float healthBonusProbability = 0.05f;
+	public float bousSpeed = 10f;
 	
 	public AudioClip fireSound;
 	public AudioClip deathSound;
@@ -38,10 +41,22 @@ public class EnemyBehavior : MonoBehaviour {
 				health -= missile.GetDamage();
 				missile.Hit();
 				if(health <= 0) {
-					scoreKeeper.AddScore(scoreValue);
-					Destroy(gameObject);
-					AudioSource.PlayClipAtPoint(deathSound, transform.position);
+					Death();
 				}
 			}
+	}
+	
+	void Death() {
+		scoreKeeper.AddScore(scoreValue);
+		if(Random.value < healthBonusProbability) {
+			SpawBonus();
+		}
+		Destroy(gameObject);
+		AudioSource.PlayClipAtPoint(deathSound, transform.position);
+	}
+	
+	void SpawBonus() {
+		GameObject bonus = Instantiate(healthBonus, transform.position, Quaternion.identity) as GameObject;
+		bonus.rigidbody2D.velocity += new Vector2(0, -bousSpeed);
 	}
 }
