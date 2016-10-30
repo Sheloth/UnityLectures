@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class MusicPlayer : MonoBehaviour {
+public class MusicManager : MonoBehaviour {
 
 	public AudioClip[] levelMusicArray;
 
@@ -24,5 +24,9 @@ public class MusicPlayer : MonoBehaviour {
 			audioSource.loop = true;
 			audioSource.Play();
 		}
+	}
+	
+	public void SetVolume (float volume) {
+		audioSource.volume = volume;
 	}
 }
