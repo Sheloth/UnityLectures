@@ -6,7 +6,7 @@ public class LevelManager : MonoBehaviour {
 	public float loadLevelDelay;
 	
 	void Start () {
-		if(loadLevelDelay != 0) {
+		if(loadLevelDelay > 0) {
 			Invoke("LoadNextLevel", loadLevelDelay);
 		}
 	}
