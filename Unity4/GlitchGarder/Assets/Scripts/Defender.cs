@@ -1,10 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Attackers : MonoBehaviour {
-
-	[Range (-1f, 1.5f)]
-	public float walkSpeed;
+public class Defender : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
@@ -13,6 +10,10 @@ public class Attackers : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		transform.Translate(Vector3.left * walkSpeed * Time.deltaTime);
+	
+	}
+	
+	void OnTriggerEnter2D() {
+		Debug.Log(name + " trigger entered");
 	}
 }
