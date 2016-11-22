@@ -27,7 +27,6 @@ public class Attacker : MonoBehaviour {
 	
 	public void SetSpeed (float speed) {
 		currentSpeed = speed;
-		print(currentSpeed);
 	}
 	
 	public void StrikeCurrentTarget (float damage) {
