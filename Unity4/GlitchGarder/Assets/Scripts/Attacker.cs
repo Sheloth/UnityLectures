@@ -5,6 +5,10 @@ public class Attacker : MonoBehaviour {
 
 	[Tooltip ("Average number of seconds between appearances")]
 	public float seenEverySecond;
+	
+	[Range(1, 200)]
+	public float damage = 20;
+	
 	private float currentSpeed;
 	private GameObject currentTarget;
 	private Animator animator;
@@ -29,12 +33,17 @@ public class Attacker : MonoBehaviour {
 		currentSpeed = speed;
 	}
 	
-	public void StrikeCurrentTarget (float damage) {
+	public void StrikeCurrentTarget () {
 		if(currentTarget) {
 			Health health = currentTarget.GetComponent<Health>();
 			
 			if(health) {
 				health.DealDamage(damage);
+			}
+			
+			Stone stone = currentTarget.GetComponent<Stone>();
+			if(stone) {
+				stone.Attack();
 			}
 		}
 	}

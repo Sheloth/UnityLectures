@@ -26,7 +26,7 @@ public class OptionsController : MonoBehaviour {
 	
 	public void SaveAndExit() {
 		PlayerPrefsManager.SetMasterVolume(volumeSlider.value);
-		PlayerPrefsManager.SetDifficulty(difficultySlider.value);
+		PlayerPrefsManager.SetDifficulty((int)difficultySlider.value);
 		
 		levelManager.LoadLevel("01a MainMenu");
 	}

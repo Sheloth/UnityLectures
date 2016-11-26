@@ -4,14 +4,19 @@ using UnityEngine.UI;
 
 public class StarsDisplay : MonoBehaviour {
 
+	[Range(0,1000)]
+	public int starsAmount = 100;
+	
 	Text text;
-	int starsAmount = 100;
+	LevelManager levelManager;
 	
 	public enum Status {SUCCESS, FAILURE};
 
 	// Use this for initialization
 	void Start () {
 		text = GetComponent<Text>();
+		levelManager = GameObject.FindObjectOfType<LevelManager>();
+		starsAmount = starsAmount + (3-levelManager.GetDifficulty())*60;
 		UpdateDisplay();
 	}
 	

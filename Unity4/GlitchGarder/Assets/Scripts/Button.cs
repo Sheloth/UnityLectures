@@ -1,16 +1,22 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Button : MonoBehaviour {
 
+	public static GameObject selectedDefender;
+
 	public GameObject defenderPrefab;
 
 	private Button[] buttonArray;
-	public static GameObject selectedDefender;
+	private Text cost;
+	
 
 	// Use this for initialization
 	void Start () {
 		buttonArray = GameObject.FindObjectsOfType<Button>();
+		cost = GetComponentInChildren<Text>();
+		cost.text = defenderPrefab.GetComponent<Defender>().starCost.ToString();
 	}
 	
 	// Update is called once per frame
