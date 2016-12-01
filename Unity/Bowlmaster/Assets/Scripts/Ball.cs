@@ -3,28 +3,29 @@ using System.Collections;
 
 public class Ball : MonoBehaviour {
 
-    public float launchSpeed = 1;
+    public bool inPlay;
 
     private Rigidbody ballRigidBody;
     private AudioSource audioSource;
 
-	// Use this for initialization
-	void Start ()
-    {
+    // Use this for initialization
+    void Start() {
         ballRigidBody = GetComponent<Rigidbody>();
         audioSource = GetComponent<AudioSource>();
+        ballRigidBody.useGravity = false;
 
-        Launch();
+        inPlay = false;
     }
 
-    private void Launch()
-    {
-        ballRigidBody.velocity = new Vector3(0, 0, launchSpeed);
+    public void Launch(Vector3 velocity) {
+        inPlay = true;
+        ballRigidBody.useGravity = true;
+        ballRigidBody.velocity = velocity;
         audioSource.Play();
     }
 
     // Update is called once per frame
-    void Update () {
-	
-	}
+    void Update() {
+
+    }
 }
