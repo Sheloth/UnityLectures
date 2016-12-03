@@ -6,7 +6,7 @@ public class PinSetter : MonoBehaviour {
 
     public int lastStandingCount = -1;
     public Text standingDisplay;
-    public float distanceToRaise = 50f;
+    public GameObject pinSet;
 
     private Ball ball;
     private bool ballEnteredBox = false;
@@ -28,22 +28,20 @@ public class PinSetter : MonoBehaviour {
 
     public void RaisePins () {
         foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
-            if (pin.IsStanding()) {
-                pin.transform.Translate( new Vector3(0, distanceToRaise, 0));
-            }
+            pin.Raise();
         }
     }
 
     public void LowerPins () {
         foreach (Pin pin in GameObject.FindObjectsOfType<Pin>()) {
-            if (pin.IsStanding()) {
-                pin.transform.Translate(new Vector3(0, -distanceToRaise, 0));
-            }
+            pin.Lower();
         }
+        Debug.Log("Low");
     }
 
     public void RenewPins() {
-        Debug.Log("Renew");
+        GameObject newPinSet = Instantiate(pinSet, new Vector3(0f, 0f, 1829f), Quaternion.identity) as GameObject;
+        newPinSet.transform.Translate(new Vector3(0, 40f, 0), Space.World);
     }
 
     int CountStanding () {
@@ -86,14 +84,6 @@ public class PinSetter : MonoBehaviour {
         if(hitObject.GetComponent<Ball>()) {
             ballEnteredBox = true;
             standingDisplay.color = Color.red;
-        }
-    }
-
-    void OnTriggerExit(Collider collider) {
-        GameObject hitObject = collider.gameObject;
-
-        if (hitObject.GetComponent<Pin>()) {
-            Destroy(hitObject);
         }
     }
 
