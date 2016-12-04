@@ -28,6 +28,7 @@ public class Ball : MonoBehaviour {
     public void Reset() {
         inPlay = false;
         transform.position = ballStartPos;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
         ballRigidBody.useGravity = false;
         ballRigidBody.velocity = Vector3.zero;
         ballRigidBody.angularVelocity = Vector3.zero;

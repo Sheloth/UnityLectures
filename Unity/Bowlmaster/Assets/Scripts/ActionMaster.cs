@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class ActionMaster {
 
@@ -13,15 +14,16 @@ public class ActionMaster {
     private int[] bowls = new int[21];
     private int bowl = 1;
 
-	// Use this for initialization
-	void Start () {
-	
-	}
-	
-	// Update is called once per frame
-	void Update () {
-	
-	}
+    public static Action NextAction(List<int> pinFalls) {
+        ActionMaster actionMaster = new ActionMaster();
+        Action currentAction = new Action();
+
+        foreach(int pinFall in pinFalls) {
+            currentAction = actionMaster.Bowl(pinFall);
+        }
+
+        return currentAction;
+    }
 
     public Action Bowl (int pins) {
         if(pins < 0 || pins > 10) {
@@ -34,16 +36,25 @@ public class ActionMaster {
             return Action.EndGame;
         }
 
-        if (bowl >= 19 && Bowl21Awarded()) {
+        if (bowl == 19 && pins == 10) {
             bowl += 1;
             return Action.Reset;
         }
-        else if(bowl == 20 && !Bowl21Awarded()) {
-            return Action.EndGame;
+        else if(bowl == 20) {
+            bowl++;
+            if (IsSpareInLastFrame() && pins != 0) {
+                return Action.Reset;
+            }
+            else if(Bowl21Awarded()){
+                return Action.Tidy;
+            }
+            else {
+                return Action.EndGame;
+            }
         }
 
         if(pins == 10) {
-            bowl += 2;
+            bowl += (bowl % 2 == 0 ? 1 : 2);
             return Action.EndTurn;
         }
 
@@ -57,6 +68,10 @@ public class ActionMaster {
         }
 
         throw new UnityException("Invalid ActionMaster state");
+    }
+
+    private bool IsSpareInLastFrame() {
+        return (bowls[19 - 1] + bowls[20 - 1]) % 10 == 0;
     }
 
     private bool Bowl21Awarded() {
