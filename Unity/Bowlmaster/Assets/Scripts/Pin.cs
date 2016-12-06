@@ -24,6 +24,7 @@ public class Pin : MonoBehaviour {
         if(IsStanding()) {
             pinRigidBody.useGravity = false;
             transform.Translate(new Vector3(0, distanceToRaise, 0), Space.World);
+            transform.rotation = Quaternion.Euler(new Vector3(270f, 0, 0));
         }
     }
 
